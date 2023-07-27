@@ -14,7 +14,7 @@ char **op_toks = NULL;
  */
 void release_tokens_memory(void)
 {
-size_t i = 0
+size_t i = 0;
 
 if (op_toks == NULL)
 return;
@@ -135,14 +135,14 @@ char *new_line;
 void (*op_func)(stack_t **, unsigned int);
 
 if (initialize_stack(&stack) == EXIT_FAILURE)
-return EXIT_FAILURE;
+return (EXIT_FAILURE);
 
 line = (char *)malloc(line_capacity * sizeof(char));
 if (line == NULL)
 {
 fprintf(stderr, "Memory allocation error.\n");
 free_stack_and_elements(&stack);
-return EXIT_FAILURE;
+return (EXIT_FAILURE);
 }
 
 while ((c = fgetc(script_fd)) != EOF)
@@ -161,7 +161,7 @@ if (is_empty_line(line, DELIMS))
 continue;
 free(line);
 free_stack_and_elements(&stack);
-return print_malloc_error_and_exit();
+return (print_malloc_error_and_exit());
 }
 else if (op_toks[0][0] == '#') /* comment line */
 {
@@ -174,9 +174,10 @@ if (op_func == NULL)
 {
 free(line);
 free_stack_and_elements(&stack);
-exit_status = print_unknown_instruction_error_and_exit(op_toks[0], line_number);
+exit_status = print_unknown_instruction_error_and_exit(op_toks[0],
+line_number);
 release_tokens_memory();
-return exit_status;
+return (exit_status);
 }
 
 prev_tok_len = get_token_array_length();
@@ -187,7 +188,7 @@ exit_status = op_toks && op_toks[prev_tok_len] ? atoi
 (op_toks[prev_tok_len]) : EXIT_FAILURE;
 release_tokens_memory();
 free(line);
-return exit_status;
+return (exit_status);
 }
 release_tokens_memory();
 }
@@ -197,13 +198,13 @@ else
 if (line_length >= line_capacity - 1)
 {
 line_capacity *= 2;
-new_line = (char *)realloc(line, line_capacity * sizeof(char));
+new_line = (char *)realloc(line, line_capacity *sizeof(char));
 if (new_line == NULL)
 {
 fprintf(stderr, "Memory allocation error.\n");
 free(line);
 free_stack_and_elements(&stack);
-return EXIT_FAILURE;
+return (EXIT_FAILURE);
 }
 line = new_line;
 }
@@ -215,5 +216,5 @@ line_length++;
 
 free_stack_and_elements(&stack);
 free(line);
-return EXIT_SUCCESS;
+return (EXIT_SUCCESS);
 }
